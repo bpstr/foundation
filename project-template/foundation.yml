@@ -1,0 +1,19 @@
+foundation:
+  version: 0.1.0
+  source: bpstr/foundation
+
+specifications:
+  directory: .specs
+  architecture_changes_require_adr: true
+  behavior_changes_require_feature_update: true
+
+scripts:
+  install: scripts/install.sh
+  update: scripts/update.sh
+  verify: scripts/verify.sh
+  healthcheck: scripts/healthcheck.sh
+  rollback: scripts/rollback.sh
+
+project:
+  profile: common
+  # Add framework, runtime and deployment metadata here.

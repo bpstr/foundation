@@ -1,0 +1,14 @@
+name: Foundation
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  standards:
+    uses: bpstr/foundation/.github/workflows/foundation-check.yml@main
