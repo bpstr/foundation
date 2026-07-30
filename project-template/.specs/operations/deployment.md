@@ -14,6 +14,12 @@ Document local, preview, staging and production environments that exist.
 
 List required environment variables and external services without storing secret values.
 
+## Continuous integration
+
+Document the GitHub Actions workflows used for pull requests and pushes. Include dependency installation, test environment setup, required service containers, automated tests, linting, static analysis, application builds and the invocation of `scripts/verify.sh`.
+
+Keep CI validation separate from production deployment. Document which branch protections or required checks must pass before merging.
+
 ## First installation
 
 Describe what `scripts/install.sh` performs and its prerequisites.
