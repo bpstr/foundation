@@ -29,6 +29,12 @@ git status
 git diff
 ```
 
+## Project kickstart workflow
+
+Use [`standards/project-kickstart.md`](standards/project-kickstart.md) when creating a new application. It defines the order for local project creation, GitHub initialization, Foundation installation, the first coding-agent prompt, specification setup, application CI and deployment preparation.
+
+The document includes the CatalogPatch Laravel kickoff as a concrete example. Application CI is required in addition to Foundation's structural workflow: the project workflow must prepare dependencies and services, run tests and builds, and invoke `scripts/verify.sh`.
+
 ## What is installed
 
 ```text
@@ -44,7 +50,7 @@ scripts/rollback.sh              Release rollback contract
 .github/workflows/foundation.yml Shared structure validation
 ```
 
-Foundation standardizes **how a project explains itself and how automation invokes it**. It does not own the application's actual architectural decisions, feature specifications, or deployment implementation.
+Foundation standardizes **how a project explains itself and how automation invokes it**. It does not own the application's actual architectural decisions, feature specifications, deployment implementation or framework-specific CI setup.
 
 ## Core rules
 
@@ -56,6 +62,7 @@ Foundation standardizes **how a project explains itself and how automation invok
 6. Project scripts expose stable commands even when their internal implementation differs.
 7. Behavioral changes update the relevant feature specification.
 8. Architectural changes create or supersede an ADR rather than rewriting history.
+9. Every application has project-specific CI that invokes `scripts/verify.sh`; the Foundation workflow alone is not sufficient application validation.
 
 ## Typical agent workflow
 
@@ -82,6 +89,7 @@ Foundation-managed files live under `.foundation/` and may be refreshed by rerun
 | `.specs/decisions/*` | Project |
 | `.specs/operations/*` | Project |
 | `scripts/*` | Project |
+| Application CI workflows | Project |
 | `foundation.yml` | Project |
 
 ## Repository layout
