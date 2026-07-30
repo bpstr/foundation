@@ -5,9 +5,10 @@ These rules are managed by Foundation. Project-specific instructions belong in t
 ## Before changing code
 
 1. Read the root `AGENTS.md`.
-2. Read `.specs/README.md` and the relevant architecture, feature, decision and operations documents.
-3. Inspect the existing implementation and tests before proposing a replacement.
-4. Identify behavioral, data, security, deployment and compatibility impact.
+2. Read `foundation.yml` and, when `project.profile` names an installed profile, read the matching `.foundation/profiles/<profile>.md` guidance.
+3. Read `.specs/README.md` and the relevant architecture, feature, decision and operations documents.
+4. Inspect the existing implementation and tests before proposing a replacement.
+5. Identify behavioral, data, security, deployment and compatibility impact.
 
 ## While changing code
 
@@ -18,6 +19,7 @@ These rules are managed by Foundation. Project-specific instructions belong in t
 5. Update feature specifications when behavior, constraints, APIs or acceptance criteria change.
 6. Create a new ADR for significant architectural choices; supersede rather than rewrite accepted ADRs.
 7. Update operations documentation when configuration, deployment, migrations, queues, storage, monitoring or recovery changes.
+8. Apply the selected project profile without inventing deferred functionality.
 
 ## Before completion
 
