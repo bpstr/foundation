@@ -2,6 +2,13 @@
 
 All notable changes to Foundation are documented here.
 
+## 0.2.0 — 2026-07-30
+
+- Add a standard project kickstart workflow with a concrete CatalogPatch Laravel example.
+- Require project-specific GitHub Actions CI in addition to the Foundation structure workflow.
+- Add CI planning to the deployment standard and installed deployment specification template.
+- Clarify that `scripts/verify.sh` is the stable application verification entry point.
+
 ## 0.1.0 — 2026-07-29
 
 - Add the non-destructive project installer.
