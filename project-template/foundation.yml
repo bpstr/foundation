@@ -1,5 +1,5 @@
 foundation:
-  version: 0.1.0
+  version: 0.2.1
   source: bpstr/foundation
 
 specifications:
@@ -15,5 +15,6 @@ scripts:
   rollback: scripts/rollback.sh
 
 project:
+  # Supported profiles currently include: common, saas.
   profile: common
-  # Add framework, runtime and deployment metadata here.
+  # Add framework, frontend, runtime, infrastructure and deployment metadata here.
