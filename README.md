@@ -2,7 +2,7 @@
 
 A small, reusable engineering foundation for projects built and maintained with coding agents.
 
-Foundation gives every project the same basic operating model without forcing every project to use the same language, framework, or deployment platform. Each project keeps its own architecture and feature truth locally, while this repository supplies the conventions, templates, checks, and reusable automation.
+Foundation gives every project the same basic operating model without forcing every project to use the same language, framework, deployment platform or product type. Each project keeps its own architecture and feature truth locally, while this repository supplies conventions, profiles, templates, checks and reusable automation.
 
 ## Install into any project
 
@@ -17,7 +17,7 @@ The installer is intentionally conservative:
 - initializes Git when the directory is not already a repository;
 - does not replace existing project files or deployment scripts;
 - adds a small managed block to an existing `AGENTS.md` instead of replacing it;
-- installs shared agent guidance under `.foundation/`;
+- installs shared agent guidance and managed project profiles under `.foundation/`;
 - creates the `.specs/` structure and templates when missing;
 - adds standard operational script contracts when missing;
 - can be run again to refresh Foundation-managed files.
@@ -29,25 +29,30 @@ git status
 git diff
 ```
 
-## Project kickstart workflow
+## SaaS project kickstart
 
-Use [`standards/project-kickstart.md`](standards/project-kickstart.md) when creating a new application. It defines the order for local project creation, GitHub initialization, Foundation installation, the first coding-agent prompt, specification setup, application CI and deployment preparation.
+Use [`standards/project-kickstart.md`](standards/project-kickstart.md) when creating a new SaaS application. It defines the order for local project creation, GitHub initialization, Foundation installation, selecting `project.profile: saas`, the first coding-agent prompt, specification setup, application CI and deployment preparation.
 
-The document includes the CatalogPatch Laravel kickoff as a concrete example. Application CI is required in addition to Foundation's structural workflow: the project workflow must prepare dependencies and services, run tests and builds, and invoke `scripts/verify.sh`.
+The complete SaaS baseline is defined in [`standards/saas.md`](standards/saas.md). It covers account and data-ownership boundaries, authentication and connected identities, plans and entitlements, localization, privacy, queues, CI, VPS operations, backups and recovery.
+
+The kickstart document includes the CatalogPatch Laravel kickoff as a concrete example. Application CI is required in addition to Foundation's structural workflow: the project workflow must prepare dependencies and services, test authorization and customer-data isolation, run builds, and invoke `scripts/verify.sh`.
+
+Foundation remains usable for non-SaaS projects through the default `common` profile. Selecting a profile adds requirements; it does not silently generate product functionality.
 
 ## What is installed
 
 ```text
-AGENTS.md                         Agent entry point
-foundation.yml                   Project-level Foundation configuration
-.foundation/                     Foundation-managed rules and version metadata
-.specs/                          Project architecture, decisions, features and operations
-scripts/install.sh               First-time application installation contract
-scripts/update.sh                Application update/deployment contract
-scripts/verify.sh                Local and CI verification entry point
-scripts/healthcheck.sh           Runtime health verification contract
-scripts/rollback.sh              Release rollback contract
-.github/workflows/foundation.yml Shared structure validation
+AGENTS.md                              Agent entry point
+foundation.yml                        Project-level Foundation configuration
+.foundation/                          Foundation-managed rules and version metadata
+.foundation/profiles/saas.md           Installed SaaS agent guidance
+.specs/                               Project architecture, decisions, features and operations
+scripts/install.sh                    First-time application installation contract
+scripts/update.sh                     Application update/deployment contract
+scripts/verify.sh                     Local and CI verification entry point
+scripts/healthcheck.sh                Runtime health verification contract
+scripts/rollback.sh                   Release rollback contract
+.github/workflows/foundation.yml      Shared structure validation
 ```
 
 Foundation standardizes **how a project explains itself and how automation invokes it**. It does not own the application's actual architectural decisions, feature specifications, deployment implementation or framework-specific CI setup.
@@ -55,25 +60,29 @@ Foundation standardizes **how a project explains itself and how automation invok
 ## Core rules
 
 1. `AGENTS.md` is short and routes agents to durable project knowledge.
-2. `.specs/architecture/` describes how the system currently works.
-3. `.specs/features/` describes current and planned product behavior.
-4. `.specs/decisions/` contains append-only Architecture Decision Records.
-5. `.specs/operations/` documents deployment, recovery and runtime concerns.
-6. Project scripts expose stable commands even when their internal implementation differs.
-7. Behavioral changes update the relevant feature specification.
-8. Architectural changes create or supersede an ADR rather than rewriting history.
-9. Every application has project-specific CI that invokes `scripts/verify.sh`; the Foundation workflow alone is not sufficient application validation.
+2. `foundation.yml` declares the project profile and important runtime metadata.
+3. Agents apply the matching managed profile guidance when a profile is selected.
+4. `.specs/architecture/` describes how the system currently works.
+5. `.specs/features/` describes current and planned product behavior.
+6. `.specs/decisions/` contains append-only Architecture Decision Records.
+7. `.specs/operations/` documents deployment, recovery and runtime concerns.
+8. Project scripts expose stable commands even when their internal implementation differs.
+9. Behavioral changes update the relevant feature specification.
+10. Architectural changes create or supersede an ADR rather than rewriting history.
+11. Every application has project-specific CI that invokes `scripts/verify.sh`; the Foundation workflow alone is not sufficient application validation.
+12. Deferred functionality must be documented rather than partially or implicitly implemented.
 
 ## Typical agent workflow
 
 Before changing the project, an agent should:
 
 1. read `AGENTS.md` and `.foundation/AGENTS.md`;
-2. read `.specs/README.md` and the relevant feature and architecture documents;
-3. implement the smallest coherent change;
-4. update specifications when behavior or architecture changes;
-5. run `./scripts/verify.sh`;
-6. report implementation, documentation and operational impact together.
+2. read `foundation.yml` and the selected `.foundation/profiles/<profile>.md` guidance;
+3. read `.specs/README.md` and the relevant feature and architecture documents;
+4. implement the smallest coherent change;
+5. update specifications when behavior or architecture changes;
+6. run `./scripts/verify.sh`;
+7. report implementation, documentation and operational impact together.
 
 ## Project-owned versus Foundation-managed
 
@@ -84,13 +93,13 @@ Foundation-managed files live under `.foundation/` and may be refreshed by rerun
 | `.foundation/*` | Foundation |
 | Root `AGENTS.md` managed block | Foundation |
 | Root `AGENTS.md` project rules | Project |
+| `foundation.yml` | Project |
 | `.specs/architecture/*` | Project |
 | `.specs/features/*` | Project |
 | `.specs/decisions/*` | Project |
 | `.specs/operations/*` | Project |
 | `scripts/*` | Project |
 | Application CI workflows | Project |
-| `foundation.yml` | Project |
 
 ## Repository layout
 
@@ -100,6 +109,7 @@ foundation/
 ├── standards/
 ├── project-template/
 │   ├── .foundation/
+│   │   └── profiles/
 │   ├── .specs/
 │   ├── .github/workflows/
 │   ├── scripts/
@@ -108,7 +118,7 @@ foundation/
 └── .github/workflows/
 ```
 
-- `standards/` explains the conventions for humans.
+- `standards/` explains the conventions and project profiles for humans.
 - `project-template/` contains files installed into projects.
 - `tools/` contains checks used locally and by CI.
 - `.github/workflows/` contains reusable GitHub workflows.
@@ -121,7 +131,7 @@ Run the same installer again from a project root:
 curl -fsSL https://raw.githubusercontent.com/bpstr/foundation/main/install.sh | bash
 ```
 
-Foundation-managed files are refreshed. Project-owned files are preserved. After reviewing the diff, commit the update like any other project change.
+Foundation-managed files, including installed profile guidance, are refreshed. Project-owned files are preserved. After reviewing the diff, commit the update like any other project change.
 
 ## Deployment philosophy
 
@@ -135,7 +145,7 @@ Central automation should orchestrate deployments, but each project should own t
 ./scripts/rollback.sh
 ```
 
-This allows Laravel, Node.js, Astro, workers, games, and future stacks to share one delivery model without pretending they deploy identically.
+This allows Laravel, Node.js, Astro, workers, games and future stacks to share one delivery model without pretending they deploy identically.
 
 ## Status
 
