@@ -54,7 +54,8 @@ copy_managed_file() {
 for managed_path in \
   ".foundation/AGENTS.md" \
   ".foundation/README.md" \
-  ".foundation/VERSION"; do
+  ".foundation/VERSION" \
+  ".foundation/profiles/saas.md"; do
   copy_managed_file "$managed_path"
 done
 
